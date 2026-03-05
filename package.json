@@ -1,0 +1,13 @@
+{
+  "name": "@neura/core",
+  "version": "0.1.0",
+  "description": "Core protocol and shared types for Neura Relay",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0"
+  }
+}
