@@ -1,0 +1,17 @@
+{
+  "receipt_id": "decision_receipt_example_001",
+  "action_card_version": "0.1",
+  "action_card_ref": "action_card_example_001",
+  "decision": "revise",
+  "reason": "The proposed action is directionally useful, but it should preserve review timing and avoid implying final approval.",
+  "reviewed_output": "Confirm that the document was received and will be reviewed today without promising approval.",
+  "recommended_next_step": "Revise the proposed action before execution.",
+  "evidence_refs": ["ticket_123", "uploaded_document_456"],
+  "trace_ref": "trace_ref_example_001",
+  "confidence": {
+    "low": 48,
+    "high": 96
+  },
+  "resolution_score": 72,
+  "relay_boundary": "decision_gate_only_developer_keeps_execution"
+}
