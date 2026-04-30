@@ -58,11 +58,16 @@ Relay returns `decision_receipt`:
 
 ```json
 {
-  "decision": "proceed | revise | stop | human_review",
-  "trace_ref": "trace_ref_run_123",
+  "input_model": "action_card_v0_1",
+  "decision": "human_review",
+  "trace_ref": "trace_ref_...",
+  "next_step": "Route this proposed action to human review before execution.",
   "relay_boundary": "decision_gate_only_developer_keeps_execution"
 }
 ```
+
+The exact `trace_ref` changes on each run. The important launch boundary is stable:
+Relay returns a Decision Receipt before the developer product executes anything.
 
 ## Boundary
 
