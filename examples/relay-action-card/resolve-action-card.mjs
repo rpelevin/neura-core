@@ -1,6 +1,13 @@
 #!/usr/bin/env node
 
-import actionCard from "./action-card.v0.1.json" with { type: "json" };
+import { readFile } from "node:fs/promises";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const exampleDir = dirname(fileURLToPath(import.meta.url));
+const actionCard = JSON.parse(
+  await readFile(join(exampleDir, "action-card.v0.1.json"), "utf8"),
+);
 
 const RELAY_BASE_URL = process.env.RELAY_BASE_URL ?? "https://www.neurarelay.com";
 

@@ -7,6 +7,8 @@ Developers keep their own agents, workflows, products, data, and execution syste
 ## Run
 
 ```bash
+git clone https://github.com/rpelevin/neura-core.git
+cd neura-core
 node examples/relay-action-card/resolve-action-card.mjs
 ```
 
