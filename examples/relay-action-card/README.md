@@ -1,60 +1,56 @@
 # Relay Action Card Example
 
-This is the minimum public example for using Neura Relay as an approval layer for agent actions.
-
-Developers keep their own agents, workflows, products, data, and execution systems. Before a proposed agent action becomes real, the developer sends Relay an Action Card. Relay returns a Decision Receipt that the developer can store with the proposed action.
+This is the minimum public example for using Neura Relay as a decision gate before Agent execution.
 
 ## Run
 
 ```bash
-git clone https://github.com/rpelevin/neura-core.git
-cd neura-core
-node examples/relay-action-card/resolve-action-card.mjs
+npm run example:relay
 ```
 
 Use a local Relay server:
 
 ```bash
-RELAY_BASE_URL=http://localhost:3000 node examples/relay-action-card/resolve-action-card.mjs
+RELAY_BASE_URL=http://localhost:3000 npm run example:relay
 ```
 
 ## Files
 
-- `action-card.v0.1.json` is the request shape.
-- `decision-receipt.v0.1.json` is the response shape to store.
-- `resolve-action-card.mjs` calls `POST /api/resolve`.
+- `action-card.v0.1.json`: the proposed Agent action
+- `decision-receipt.v0.1.json`: the response shape your app stores
+- `resolve-action-card.mjs`: sends the Action Card to Relay
 
-## Request
+## Action Card
+
+The Action Card is the request. It names the Agent, proposed action, affected object, evidence refs, rule refs, risk category, and requested outcome.
 
 ```json
 {
-  "action_card": {
-    "version": "0.1",
-    "agent": {
-      "id": "agent_support_reply_001",
-      "owner": "acme_support",
-      "capability": "customer_message_draft",
-      "capabilityVersion": "0.1.0"
-    },
-    "proposedAction": {
-      "type": "send_message",
-      "summary": "Send a customer reply confirming that the document was received and will be reviewed today.",
-      "target": "customer_thread_123"
-    },
-    "affectedObject": "customer_thread_123",
-    "context": {
-      "evidenceRefs": ["ticket_123", "uploaded_document_456"],
-      "ruleRefs": ["customer_reply_policy"],
-      "riskCategory": "customer_communication",
-      "requestedOutcome": "proceed_or_review"
-    }
+  "version": "0.1",
+  "agent": {
+    "id": "agent_support_reply_001",
+    "owner": "acme_support",
+    "capability": "customer_message_draft",
+    "capabilityVersion": "0.1.0"
+  },
+  "proposedAction": {
+    "type": "send_message",
+    "summary": "Send a customer reply confirming that the document was received and will be reviewed today.",
+    "target": "customer_thread_123"
+  },
+  "affectedObject": "customer_thread_123",
+  "context": {
+    "evidenceRefs": ["ticket_123", "uploaded_document_456"],
+    "ruleRefs": ["customer_reply_policy"],
+    "riskCategory": "customer_communication",
+    "requestedOutcome": "proceed_or_review"
   }
 }
 ```
 
-## Response
+## Decision Receipt
 
-Relay returns `decision_receipt`:
+Relay returns the governed response before execution.
 
 ```json
 {
@@ -66,9 +62,4 @@ Relay returns `decision_receipt`:
 }
 ```
 
-The exact `trace_ref` changes on each run. The important launch boundary is stable:
-Relay returns a Decision Receipt before the developer product executes anything.
-
-## Boundary
-
-Relay returns a governed decision before execution. The developer still owns the agent, workflow, business logic, data, and final execution decision.
+The exact `trace_ref` changes on each run. The stable boundary is the point: Relay returns a governed decision, and your app keeps execution ownership.

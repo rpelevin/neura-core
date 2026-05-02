@@ -10,6 +10,7 @@ const actionCard = JSON.parse(
 );
 
 const RELAY_BASE_URL = process.env.RELAY_BASE_URL ?? "https://www.neurarelay.com";
+const jsonOutput = process.argv.includes("--json");
 
 const response = await fetch(new URL("/api/resolve", RELAY_BASE_URL), {
   method: "POST",
@@ -24,16 +25,29 @@ if (!response.ok || payload.ok !== true) {
   process.exit(1);
 }
 
-console.log(
-  JSON.stringify(
-    {
-      input_model: payload.input_model,
-      decision: payload.decision_receipt?.decision,
-      trace_ref: payload.decision_receipt?.trace_ref,
-      next_step: payload.decision_receipt?.recommended_next_step,
-      relay_boundary: payload.decision_receipt?.relay_boundary,
-    },
-    null,
-    2,
-  ),
-);
+const receipt = payload.decision_receipt;
+const result = {
+  relay: RELAY_BASE_URL,
+  input_model: payload.input_model,
+  decision: receipt?.decision,
+  reason: receipt?.reason,
+  trace_ref: receipt?.trace_ref,
+  next_step: receipt?.recommended_next_step,
+  relay_boundary: receipt?.relay_boundary,
+};
+
+if (jsonOutput) {
+  console.log(JSON.stringify(result, null, 2));
+} else {
+  console.log("Neura Relay returned a Decision Receipt");
+  console.log("");
+  console.log(`Relay: ${result.relay}`);
+  console.log(`Input: ${result.input_model}`);
+  console.log(`Decision: ${result.decision}`);
+  console.log(`Reason: ${result.reason}`);
+  console.log(`Next step: ${result.next_step}`);
+  console.log(`Trace: ${result.trace_ref}`);
+  console.log(`Boundary: ${result.relay_boundary}`);
+  console.log("");
+  console.log("Your app keeps execution ownership. Relay only returns the governed decision before execution.");
+}

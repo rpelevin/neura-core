@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "example:relay": "node examples/relay-action-card/resolve-action-card.mjs",
+    "verify:relay-example": "node scripts/verify-relay-action-card-example.mjs"
   },
   "devDependencies": {
     "typescript": "^5.3.0"
